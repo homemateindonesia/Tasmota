@@ -1044,9 +1044,9 @@ void EnergyShow(bool json)
         EnergyFormatIndex(value_chr, energy_usage_chr[0], json, 2));
     }
 
-    ResponseAppend_P(PSTR(",\"" D_JSON_YESTERDAY "\":%s,\"" D_JSON_TODAY "\":%s"),
-      energy_yesterday_chr,
-      energy_daily_chr);
+  //  ResponseAppend_P(PSTR(",\"" D_JSON_YESTERDAY "\":%s,\"" D_JSON_TODAY "\":%s"),
+  //    energy_yesterday_chr,
+  //    energy_daily_chr);
 
  #ifdef SDM630_IMPORT
     if (!isnan(Energy.import_active[0])) {
@@ -1084,18 +1084,18 @@ void EnergyShow(bool json)
           EnergyFormat(value2_chr, reactive_power_chr[0], json),
           EnergyFormat(value3_chr, power_factor_chr[0], json));
       }
-      if (!isnan(Energy.frequency[0])) {
-        ResponseAppend_P(PSTR(",\"" D_JSON_FREQUENCY "\":%s"),
-          EnergyFormat(value_chr, frequency_chr[0], json, Energy.frequency_common));
-      }
+      // if (!isnan(Energy.frequency[0])) {
+      //   ResponseAppend_P(PSTR(",\"" D_JSON_FREQUENCY "\":%s"),
+      //     EnergyFormat(value_chr, frequency_chr[0], json, Energy.frequency_common));
+      // }
     }
     if (Energy.voltage_available) {
-      ResponseAppend_P(PSTR(",\"" D_JSON_VOLTAGE "\":%s"),
-        EnergyFormat(value_chr, voltage_chr[0], json, Energy.voltage_common));
+      // ResponseAppend_P(PSTR(",\"" D_JSON_VOLTAGE "\":%s"),
+      //   EnergyFormat(value_chr, voltage_chr[0], json, Energy.voltage_common));
     }
     if (Energy.current_available) {
-      ResponseAppend_P(PSTR(",\"" D_JSON_CURRENT "\":%s"),
-        EnergyFormat(value_chr, current_chr[0], json));
+      // ResponseAppend_P(PSTR(",\"" D_JSON_CURRENT "\":%s"),
+      //   EnergyFormat(value_chr, current_chr[0], json));
     }
     XnrgCall(FUNC_JSON_APPEND);
     ResponseJsonEnd();
@@ -1103,7 +1103,7 @@ void EnergyShow(bool json)
 #ifdef USE_DOMOTICZ
     if (show_energy_period) {  // Only send if telemetry
       dtostrfd(Energy.total * 1000, 1, energy_total_chr);
-      DomoticzSensorPowerEnergy((int)Energy.active_power[0], energy_total_chr);  // PowerUsage, EnergyToday
+      // DomoticzSensorPowerEnergy((int)Energy.active_power[0], energy_total_chr);  // PowerUsage, EnergyToday
 
       dtostrfd((float)RtcSettings.energy_usage.usage1_kWhtotal / 100, 1, energy_usage_chr[0]);  // Tariff1
       dtostrfd((float)RtcSettings.energy_usage.usage2_kWhtotal / 100, 1, energy_usage_chr[1]);  // Tariff2
@@ -1112,37 +1112,37 @@ void EnergyShow(bool json)
       DomoticzSensorP1SmartMeter(energy_usage_chr[0], energy_usage_chr[1], energy_return_chr[0], energy_return_chr[1], (int)Energy.active_power[0]);
 
       if (Energy.voltage_available) {
-        DomoticzSensor(DZ_VOLTAGE, voltage_chr[0]);  // Voltage
+        // DomoticzSensor(DZ_VOLTAGE, voltage_chr[0]);  // Voltage
       }
       if (Energy.current_available) {
-        DomoticzSensor(DZ_CURRENT, current_chr[0]);  // Current
+        // DomoticzSensor(DZ_CURRENT, current_chr[0]);  // Current
       }
     }
 #endif  // USE_DOMOTICZ
 #ifdef USE_KNX
     if (show_energy_period) {
       if (Energy.voltage_available) {
-        KnxSensor(KNX_ENERGY_VOLTAGE, Energy.voltage[0]);
+        // KnxSensor(KNX_ENERGY_VOLTAGE, Energy.voltage[0]);
       }
       if (Energy.current_available) {
-        KnxSensor(KNX_ENERGY_CURRENT, Energy.current[0]);
+        // KnxSensor(KNX_ENERGY_CURRENT, Energy.current[0]);
       }
       KnxSensor(KNX_ENERGY_POWER, Energy.active_power[0]);
       if (!Energy.type_dc) {
-        KnxSensor(KNX_ENERGY_POWERFACTOR, power_factor_knx);
+        // KnxSensor(KNX_ENERGY_POWERFACTOR, power_factor_knx);
       }
-      KnxSensor(KNX_ENERGY_DAILY, Energy.daily);
+      // KnxSensor(KNX_ENERGY_DAILY, Energy.daily);
       KnxSensor(KNX_ENERGY_TOTAL, Energy.total);
-      KnxSensor(KNX_ENERGY_START, Energy.start_energy);
+      // KnxSensor(KNX_ENERGY_START, Energy.start_energy);
     }
 #endif  // USE_KNX
 #ifdef USE_WEBSERVER
   } else {
     if (Energy.voltage_available) {
-      WSContentSend_PD(HTTP_SNS_VOLTAGE, EnergyFormat(value_chr, voltage_chr[0], json, Energy.voltage_common));
+      // WSContentSend_PD(HTTP_SNS_VOLTAGE, EnergyFormat(value_chr, voltage_chr[0], json, Energy.voltage_common));
     }
     if (Energy.current_available) {
-      WSContentSend_PD(HTTP_SNS_CURRENT, EnergyFormat(value_chr, current_chr[0], json));
+      // WSContentSend_PD(HTTP_SNS_CURRENT, EnergyFormat(value_chr, current_chr[0], json));
     }
     WSContentSend_PD(HTTP_SNS_POWER, EnergyFormat(value_chr, active_power_chr[0], json));
     if (!Energy.type_dc) {
@@ -1152,8 +1152,8 @@ void EnergyShow(bool json)
                                            EnergyFormat(value3_chr, power_factor_chr[0], json));
       }
       if (!isnan(Energy.frequency[0])) {
-        WSContentSend_PD(PSTR("{s}" D_FREQUENCY "{m}%s " D_UNIT_HERTZ "{e}"),
-          EnergyFormat(value_chr, frequency_chr[0], json, Energy.frequency_common));
+        // WSContentSend_PD(PSTR("{s}" D_FREQUENCY "{m}%s " D_UNIT_HERTZ "{e}"),
+        //   EnergyFormat(value_chr, frequency_chr[0], json, Energy.frequency_common));
       }
     }
     WSContentSend_PD(HTTP_ENERGY_SNS2, energy_daily_chr, energy_yesterday_chr, energy_total_chr);
